@@ -69,6 +69,7 @@ static const char scratchpadname[] = "scratchpad";
 static const char *scratchpadcmd[] = { "st", "-t", scratchpadname, "-g", "120x34", NULL };
 
 #include "movestack.c"
+#include <X11/XF86keysym.h> // for audio keys
 static Key keys[] = {
 	/* modifier                     key        function        argument */
 	{ MODKEY,                       XK_d,      spawn,          {.v = dmenucmd } },
@@ -113,6 +114,19 @@ static Key keys[] = {
 	TAGKEYS(                        XK_8,                      7)
 	TAGKEYS(                        XK_9,                      8)
 	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
+
+// Volume Control
+	{ 0, XF86XK_AudioMute,		spawn,		SHCMD("amixer set Master toggle; kill -39 $(pidof dwmblocks)") },
+	{ 0, XF86XK_AudioRaiseVolume,	spawn,		SHCMD("amixer set Master 10%+; kill -39 $(pidof dwmblocks)") },
+	{ 0, XF86XK_AudioLowerVolume,	spawn,		SHCMD("amixer set Master 10%-; kill -39 $(pidof dwmblocks)") },
+
+// Custom Keybindings for launching applications and scripts
+	{ MODKEY,                       XK_c,      spawn,          SHCMD("google-chrome-stable") },
+	{ MODKEY,                       XK_grave,  spawn,          SHCMD("dmenuunicode") },
+	{ MODKEY|ShiftMask,             XK_q,      spawn,          SHCMD("sysact") },
+	{ MODKEY|ShiftMask,             XK_l,      spawn,          SHCMD("locker") },
+	{ MODKEY,                       XK_w,      spawn,          SHCMD("bookmarks") },
+	{ MODKEY|ShiftMask,             XK_w,      spawn,          SHCMD("bookmarks2") }
 };
 
 /* button definitions */
