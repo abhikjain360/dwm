@@ -123,7 +123,7 @@ static Key keys[] = {
 // Custom Keybindings for launching applications and scripts
 	{ MODKEY,                       XK_c,      spawn,          SHCMD("google-chrome-stable") },
 	{ MODKEY,                       XK_grave,  spawn,          SHCMD("dmenuunicode") },
-	{ MODKEY|ShiftMask,             XK_q,      spawn,          SHCMD("sysact") },
+	{ MODKEY|ShiftMask,             XK_q,      spawn,          SHCMD("sh sysact") },
 	{ MODKEY|ShiftMask,             XK_l,      spawn,          SHCMD("locker") },
 	{ MODKEY,                       XK_w,      spawn,          SHCMD("bookmarks") },
 	{ MODKEY|ShiftMask,             XK_w,      spawn,          SHCMD("bookmarks2") }
