@@ -127,6 +127,7 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_l,      spawn,          SHCMD("locker") },
 	{ MODKEY,                       XK_w,      spawn,          SHCMD("bookmarks") },
 	{ MODKEY|ShiftMask,             XK_w,      spawn,          SHCMD("bookmarks2") }
+	{ MODKEY,                       XK_m,      spawn,          SHCMD("ncmpcpp") },
 };
 
 /* button definitions */
