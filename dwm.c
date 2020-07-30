@@ -2643,26 +2643,29 @@ main(int argc, char *argv[])
 static void
 bstack(Monitor *m) {
 	int w, h, mh, mx, tx, ty, tw;
-	unsigned int i, n;
+	unsigned int i, n, oe = enablegaps, ie = enablegaps;
 	Client *c;
 
 	for (n = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), n++);
 	if (n == 0)
 		return;
+	if (smartgaps == n) {
+		oe = 0; // outer gaps disabled
+	}
 	if (n > m->nmaster) {
-		mh = m->nmaster ? m->mfact * m->wh : 0;
+		mh = m->nmaster ? m->mfact * (m->wh + m->gappih) : 0;
 		tw = m->ww / (n - m->nmaster);
 		ty = m->wy + mh;
 	} else {
-		mh = m->wh;
+		mh = m->wh - 2*m->gappoh*oe + m->gappih*ie;
 		tw = m->ww;
 		ty = m->wy;
 	}
 	for (i = mx = 0, tx = m->wx, c = nexttiled(m->clients); c; c = nexttiled(c->next), i++) {
 		if (i < m->nmaster) {
 			w = (m->ww - mx) / (MIN(n, m->nmaster) - i);
-			resize(c, m->wx + mx, m->wy, w - (2 * c->bw), mh - (2 * c->bw), 0);
-			mx += WIDTH(c);
+			resize(c, m->wx + mx + m->gappov*oe, m->wy, w - (2 * c->bw) - m->gappih*ie, mh - (2 * c->bw), 0);
+			mx += WIDTH(c) + m->gappiv*ie;
 		} else {
 			h = m->wh - mh;
 			resize(c, tx, ty, tw - (2 * c->bw), h - (2 * c->bw), 0);
