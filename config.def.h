@@ -1,7 +1,7 @@
 /* See LICENSE file for copyright and license details. */
 
 /* appearance */
-static const unsigned int borderpx  = 5;        /* border pixel of windows */
+static const unsigned int borderpx  = 7;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const int swallowfloating    = 0;        /* 1 means swallow floating windows by default */
 static const unsigned int gappih    = 10;       /* horiz inner gap between windows */
@@ -17,8 +17,8 @@ static const char col_gray1[]       = "#282a36";
 static const char col_gray2[]       = "#444444";
 static const char col_gray3[]       = "#ffffff";
 static const char col_gray4[]       = "#ffffff";
-static const char col_cyan[]        = "#bd93f9";
-static const char col_pink[]        = "#11ff55";
+static const char col_cyan[]        = "#9b71d7";
+static const char col_pink[]        = "#55ff33";
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
 	[SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
@@ -38,6 +38,7 @@ static const Rule rules[] = {
 	{ "Firefox", NULL,     NULL,           1 << 8,    0,          0,          -1,        -1 },
 	{ "st",      NULL,     NULL,           0,         0,          0,           1,        -1 },
 	{ NULL,      NULL,     "Event Tester", 0,         1,          0,           1,        -1 }, /* xev */
+	{ "lemonbar",NULL,     NULL,           0,         1,          0,           1,        -1 }, /* xev */
 };
 
 /* layout(s) */
@@ -101,7 +102,7 @@ static Key keys[] = {
 	{ MODKEY,                       XK_u,     	setlayout,      {.v = &layouts[2]} },
 	{ MODKEY|ShiftMask,             XK_u,     	setlayout,      {.v = &layouts[3]} },
 	{ MODKEY|ShiftMask,             XK_space, 	togglefloating, {0} },
-	{ MODKEY,                       XK_s,     	togglesticky,   {0} },
+	{ MODKEY|ShiftMask,                       XK_s,     	togglesticky,   {0} },
 	{ MODKEY,                       XK_0,     	view,           {.ui = ~0 } },
 	{ MODKEY|ShiftMask,             XK_0,     	tag,            {.ui = ~0 } },
 	{ MODKEY,                       XK_comma, 	focusmon,       {.i = -1 } },
@@ -132,9 +133,10 @@ static Key keys[] = {
 	{ MODKEY,                       XK_w,      spawn,          SHCMD("brave") },
 	{ MODKEY|ShiftMask,             XK_w,      spawn,          SHCMD("bookmarks2") },
 	{ MODKEY,                       XK_m,      spawn,          SHCMD("st -e ncmpcpp") },
-	{ MODKEY,                       XK_p,      spawn,          SHCMD("mpc toggle") },
 	{ MODKEY,                       XK_e,      spawn,          SHCMD("st -e ranger") },
-	{ MODKEY,                       XK_p,      spawn,          SHCMD("mpc toggle") }
+	{ MODKEY,                       XK_s,      spawn,          SHCMD("st -e alsamixer") },
+	{ MODKEY,                       XK_v,      spawn,          SHCMD("st -e nvim") },
+	{ MODKEY,                       XK_p,      spawn,          SHCMD("flameshot gui") }
 };
 
 /* button definitions */
