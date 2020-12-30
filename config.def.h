@@ -8,16 +8,23 @@ static const unsigned int gappih    = 10;       /* horiz inner gap between windo
 static const unsigned int gappiv    = 10;       /* vert inner gap between windows */
 static const unsigned int gappoh    = 10;       /* horiz outer gap between windows and screen edge */
 static const unsigned int gappov    = 10;       /* vert outer gap between windows and screen edge */
-static const int smartgaps          = 1;        /* 1 means no outer gap when there is only one window */
+static const int smartgaps          = 0;        /* 1 means no outer gap when there is only one window */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
-static const char *fonts[]          = { "UbuntuMono Nerd Font:size=16" };
-static const char dmenufont[]       = "UbuntuMono Nerd Font:size=16";
-static const char col_gray1[]       = "#282a36";
-static const char col_gray2[]       = "#444444";
-static const char col_gray3[]       = "#ffffff";
-static const char col_gray4[]       = "#ffffff";
-static const char col_cyan[]        = "#9b71d7";
+static const char *fonts[]          = { "Fira Code:size=14" };
+static const char dmenufont[]       = "Fira Code:size=14";
+//static const char col_gray1[]       = "#282a36";
+//static const char col_gray2[]       = "#444444";
+//static const char col_gray3[]       = "#ffffff";
+//static const char col_gray4[]       = "#ffffff";
+//static const char col_cyan[]        = "#9b71d7";
+//static const char col_pink[]        = "#55ff33";
+static const char col_gray1[]       = "#1d2021";
+/* static const char col_gray2[]       = "#d79921"; */
+static const char col_gray2[]       = "#928374";
+static const char col_gray3[]       = "#ebdbb2";
+static const char col_gray4[]       = "#1d2021";
+static const char col_cyan[]        = "#928374";
 static const char col_pink[]        = "#55ff33";
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
@@ -42,7 +49,7 @@ static const Rule rules[] = {
 };
 
 /* layout(s) */
-static const float mfact     = 0.55; /* factor of master area size [0.05..0.95] */
+static const float mfact     = 0.5; /* factor of master area size [0.05..0.95] */
 static const int nmaster     = 1;    /* number of clients in master area */
 static const int resizehints = 0;    /* 1 means respect size hints in tiled resizals */
 
@@ -85,8 +92,8 @@ static Key keys[] = {
 	{ MODKEY,                       XK_k,     	focusstack,     {.i = -1 } },
 	{ MODKEY,                       XK_o,     	incnmaster,     {.i = +1 } },
 	{ MODKEY|ShiftMask,             XK_o,     	incnmaster,     {.i = -1 } },
-	{ MODKEY,                       XK_h,     	setmfact,       {.f = -0.05} },
-	{ MODKEY,                       XK_l,     	setmfact,       {.f = +0.05} },
+	{ MODKEY,                       XK_h,     	setmfact,       {.f = -0.025} },
+	{ MODKEY,                       XK_l,     	setmfact,       {.f = +0.025} },
 	{ MODKEY|ShiftMask,             XK_j,     	movestack,      {.i = +1 } },
 	{ MODKEY|ShiftMask,             XK_k,     	movestack,      {.i = -1 } },
 	{ MODKEY,                       XK_z,     	incrgaps,       {.i = +1 } },
@@ -134,8 +141,9 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_w,      spawn,          SHCMD("bookmarks2") },
 	{ MODKEY,                       XK_m,      spawn,          SHCMD("st -e ncmpcpp") },
 	{ MODKEY,                       XK_e,      spawn,          SHCMD("st -e ranger") },
-	{ MODKEY,                       XK_s,      spawn,          SHCMD("st -e alsamixer") },
-	{ MODKEY,                       XK_v,      spawn,          SHCMD("st -e nvim") },
+	{ MODKEY,                       XK_v,      spawn,          SHCMD("st -e alsamixer") },
+	{ MODKEY,                       XK_n,      spawn,          SHCMD("st -e nvim") },
+	{ MODKEY,                       XK_s,      spawn,          SHCMD("st -e stub") },
 	{ MODKEY,                       XK_p,      spawn,          SHCMD("flameshot gui") }
 };
 
@@ -143,15 +151,21 @@ static Key keys[] = {
 /* click can be ClkTagBar, ClkLtSymbol, ClkStatusText, ClkWinTitle, ClkClientWin, or ClkRootWin */
 static Button buttons[] = {
 	/* click                event mask      button          function        argument */
-	{ ClkLtSymbol,          0,              Button1,        setlayout,      {0} },
-	{ ClkLtSymbol,          0,              Button3,        setlayout,      {.v = &layouts[2]} },
 	{ ClkWinTitle,          0,              Button2,        zoom,           {0} },
-	{ ClkStatusText,        0,              Button2,        spawn,          {.v = termcmd } },
+	{ ClkStatusText,        0,              Button1,        sigblock,   {.i = 1} },
+	{ ClkStatusText,        0,              Button2,        sigblock,   {.i = 2} },
+	{ ClkStatusText,        0,              Button3,        sigblock,   {.i = 3} },
+	{ ClkStatusText,        0,              Button4,        sigblock,   {.i = 4} },
+	{ ClkStatusText,        0,              Button5,        sigblock,   {.i = 5} },
+	{ ClkStatusText,        ShiftMask,      Button1,        sigblock,   {.i = 6} },
 	{ ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} },
-	{ ClkClientWin,         MODKEY,         Button2,        togglefloating, {0} },
-	{ ClkClientWin,         Mod1Mask,       Button2,        resizemouse,    {0} },
+	{ ClkClientWin,         MODKEY,         Button2,        defaultgaps,	{0} },
+	{ ClkClientWin,         Mod1Mask,         Button1,        resizemouse,    {0} },
+	{ ClkClientWin,		MODKEY,		Button4,	incrgaps,	{.i = +1} },
+	{ ClkClientWin,		MODKEY,		Button5,	incrgaps,	{.i = -1} },
 	{ ClkTagBar,            0,              Button1,        view,           {0} },
 	{ ClkTagBar,            0,              Button3,        toggleview,     {0} },
 	{ ClkTagBar,            MODKEY,         Button1,        tag,            {0} },
 	{ ClkTagBar,            MODKEY,         Button3,        toggletag,      {0} },
+	{ ClkRootWin,		0,		Button2,	togglebar,	{0} },
 };
